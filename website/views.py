@@ -3,10 +3,12 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from .forms import SignUpForm
+from .models import Record
 
 
 # Create your views here.
 def home(request):
+        records = Record.objects.all()
         if request.method == 'POST':
             username = request.POST['username']
             password = request.POST['password']
@@ -19,7 +21,7 @@ def home(request):
                 messages.success(request, "There was an error logging in, please try again...")
                 return redirect('home')
         else:
-            return render(request, 'home.html')
+            return render(request, 'home.html' ,{'records':records})
         
 def logout_user(request):
     logout(request)
